@@ -12,9 +12,7 @@ namespace CarPool.Services
         { 
             validation = _validation;
             dataBaseService= _dataBaseService;
-/*
-            validation = new Validation();
-            dataBaseService = new DataBaseService();*/
+
         }
         public bool SaveSignUpData(SignUpData signUpData)
         {

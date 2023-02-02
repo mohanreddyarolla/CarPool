@@ -34,5 +34,31 @@ namespace CarPool.Services
             return false;
         }
 
+        public Boolean CheckForSourceDestinationMatch(int startLocationId,int endLocationId,List<int> stopList)
+        {
+            Boolean startFound = false;
+            Boolean endFound = false;
+
+            foreach(int locationId in stopList)
+            {
+                if(locationId == startLocationId)
+                {
+                    if(!endFound)
+                    {
+                        startFound= true;
+                    }
+                }
+
+                if(locationId == endLocationId) 
+                {
+                    endFound= true;
+                }
+            }
+
+            return startFound && endFound;
+        }
+
+        
+
     }
 }

@@ -8,6 +8,11 @@ namespace CarPool.IServices
         public Boolean SaveSignUpDataInUsers(User newUser);
 
         public User GetUser(LogInData logInData);
-        public Boolean SaveInAvailableRides(AvailableRides offerRideData);
+        public int SaveInAvailableRides(AvailableRides offerRideData);
+        public bool SaveInAvailableSeats(AvailableSeats newSeats);
+
+        public void MakeRideInActive(AvailableRides newRide);
+
+        public List<AvailableRides> GetAvailbleRides();
     }
 }

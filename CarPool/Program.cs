@@ -18,16 +18,17 @@ builder.Services.AddScoped<IDataBaseService, DataBaseService>();
 builder.Services.AddScoped<IValidation, Validation>();
 builder.Services.AddScoped<ILogInService, LogInService>();
 builder.Services.AddScoped<IOfferRideSerice,OfferRideService>();
+builder.Services.AddScoped<IBookARideService, BookARideService>();
 
-
+/*
 builder.Services.AddDbContext<CarPoolDBContext>(opt =>
                                                opt.UseInMemoryDatabase("CarPoolDB"));
-
+*/
 
 /*Console.WriteLine("...");*/
 
-/*builder.Services.AddDbContext<CarPoolDBContext>(op => op.UseSqlServer("Server=LAPTOP-EURDQUD4\\SQLEXPRESS;Database=CarPoolDB;Trusted_Connection=True;TrustServerCertificate=True"));
-*/
+builder.Services.AddDbContext<CarPoolDBContext>(op => op.UseSqlServer("Server=LAPTOP-EURDQUD4\\SQLEXPRESS;Database=CarPoolDB;Trusted_Connection=True;TrustServerCertificate=True"));
+
 
 
 var app = builder.Build();

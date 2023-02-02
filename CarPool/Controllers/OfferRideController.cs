@@ -11,9 +11,18 @@ namespace CarPool.Controllers
     public class OfferRideController : ControllerBase
     {
         IOfferRideSerice offerRideSerice;
-        public OfferRideController(IOfferRideSerice _offerRideSerice)
+        CarPoolDBContext carPoolDBContext;
+        public OfferRideController(CarPoolDBContext _carPoolDBContext, IOfferRideSerice _offerRideSerice)
         {
+            carPoolDBContext = _carPoolDBContext;
             offerRideSerice= _offerRideSerice;
+        }
+
+        [HttpGet]
+        public IEnumerable<AvailableRides> ShowAllRieds()
+        {
+            
+            return carPoolDBContext.AvailableRides;
         }
         
         [HttpPost]

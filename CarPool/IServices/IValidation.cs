@@ -6,5 +6,6 @@ namespace CarPool.IServices
     {
         public Boolean ValidateSignUpData(SignUpData signUpData);
         public Boolean ValidateUser(LogInData logInData);
+        public Boolean CheckForSourceDestinationMatch(int startLocationId, int endLocationId, List<int> stopList);
     }
 }
