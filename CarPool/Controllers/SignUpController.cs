@@ -13,8 +13,8 @@ namespace CarPool.Controllers
     public class SignUpController : ControllerBase
     {
         private CarPoolDBContext carPoolDBContext;
-        ISignUpService signUpService;
-        public SignUpController(CarPoolDBContext _carPoolDBContext, ISignUpService _signUpService)
+        ISignUpSupport signUpService;
+        public SignUpController(CarPoolDBContext _carPoolDBContext, ISignUpSupport _signUpService)
         {
             carPoolDBContext = _carPoolDBContext;
             signUpService = _signUpService;
@@ -23,18 +23,16 @@ namespace CarPool.Controllers
         [HttpGet]
         public IEnumerable<User> GetUsersList()
         {
-           
             return carPoolDBContext.Users;
         }
 
         [HttpPost]
         public ActionResult GetSignUpDetails(SignUpData signUpData)
         {
-            Console.WriteLine("InSignUpController");
-            if (signUpService.SaveSignUpData(signUpData))
-                return Ok("Sign in Successful");
-            else
-                return BadRequest("SignIn UnSuccessful");
+            string status = signUpService.ProcessSignUp(signUpData);
+           
+            return Ok(status);
+            
         }
        
     }

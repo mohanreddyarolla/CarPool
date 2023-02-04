@@ -16,24 +16,45 @@ namespace CarPool.Services
             validation = _validation;
         }
 
-        public List<AvailableRides> GetAvailableRidesToBook(BookRideData bookRideData)
+        public List<OfferedRides> GetAvailableRidesToBook(RideData rideData)
         {
 
-            List<AvailableRides> rides = dataBaseService.GetAvailbleRides();
+            List<OfferedRides> rides = dataBaseService.GetAvailbleRides();
 
-            List<AvailableRides> matchingRides = new List<AvailableRides>();
+            List<OfferedRides> matchingRides = new List<OfferedRides>();
 
-            foreach (AvailableRides ride in rides)
+            foreach (OfferedRides ride in rides)
             {
 
                 List<int> stopListIds = new List<int>(Array.ConvertAll(ride.StopList.Split(','), int.Parse));
 
-                if (validation.CheckForSourceDestinationMatch(bookRideData.FromLocationId, bookRideData.ToLocationId, stopListIds) && ride.Date == bookRideData.Date)
+                if (validation.HasMatchingPickupAndDropoff(rideData.FromLocationId, rideData.ToLocationId, stopListIds) && ride.Date == rideData.Date)
                 {
                     matchingRides.Add(ride);
                 }
             }
             return matchingRides;
+        }
+
+        public String BookARide(RideBookingData rideBookingData)
+        {
+            OfferedRides ride = dataBaseService.GetAvailableRidesById(rideBookingData.AvailableRideId);
+            List<int> stopListIds = new List<int>(Array.ConvertAll(ride.StopList.Split(','), int.Parse));
+
+            if (validation.HasRoomForPassengers(stopListIds, rideBookingData.AvailableRideId, rideBookingData.RequiredSeats, rideBookingData.FromLocationId, rideBookingData.ToLocationId))
+            {
+                if(dataBaseService.SaveInBookedRides(rideBookingData.UserId, ride, rideBookingData.FromLocationId, rideBookingData.ToLocationId, rideBookingData.RequiredSeats))
+                {
+                    if(dataBaseService.ReserveSeats(stopListIds,rideBookingData.AvailableRideId,rideBookingData.RequiredSeats,rideBookingData.FromLocationId,rideBookingData.ToLocationId))
+                    {
+                        return "Congratulations! Your ride has been booked successfully.";
+                    } 
+                }
+
+                return "Sorry, the booking was not successful. Please try again later or contact customer support for assistance.";
+            }
+
+            return "Sorry, the ride has less than the required seats. Please try booking a different ride or reduce the number of required seats.";
         }
     }
 }

@@ -2,13 +2,12 @@
 
 namespace CarPool.Models.DBModels
 {
-    public class AvailableRides
+    public class OfferedRides
     {
         [Key]
-        public int AvailableRideId { get; set; }
+        public int OfferedRideId { get; set; }
         public int TotalPrice { get; set; }
 
-        
         public TimeSpan StartTime { get; set; }
 
         public TimeSpan EndTime { get; set; }
@@ -17,7 +16,7 @@ namespace CarPool.Models.DBModels
         public DateTime Date { get; set; }
 
         public string StopList { get; set; }
-        public int UserId { get; set; }
+        public int RideProviderId { get; set; }
 
         public string CurrentState { get; set; }
 

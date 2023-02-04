@@ -10,16 +10,16 @@ namespace CarPool.Controllers
     [ApiController]
     public class OfferRideController : ControllerBase
     {
-        IOfferRideSerice offerRideSerice;
+        ICarpoolOfferService offerRideSerice;
         CarPoolDBContext carPoolDBContext;
-        public OfferRideController(CarPoolDBContext _carPoolDBContext, IOfferRideSerice _offerRideSerice)
+        public OfferRideController(CarPoolDBContext _carPoolDBContext, ICarpoolOfferService _offerRideSerice)
         {
             carPoolDBContext = _carPoolDBContext;
             offerRideSerice= _offerRideSerice;
         }
 
         [HttpGet]
-        public IEnumerable<AvailableRides> ShowAllRieds()
+        public IEnumerable<OfferedRides> ShowAllRieds()
         {
             
             return carPoolDBContext.AvailableRides;
@@ -28,13 +28,9 @@ namespace CarPool.Controllers
         [HttpPost]
         public ActionResult GetOfferRideDetails(OfferRideData offerRideData)
         {
-            Console.WriteLine("InController");
-            if (offerRideSerice.SaveRideOffer(offerRideData))
-            {
-                return Ok("Ride Offered Successfully");
-            }
-
-            return BadRequest("Ride offer Rejected");
+            string status = offerRideSerice.TakeRideOffer(offerRideData);
+            
+            return Ok(status);
             
         }
     }

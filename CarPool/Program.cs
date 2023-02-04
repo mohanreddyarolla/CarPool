@@ -13,12 +13,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 /*builder.Services.AddSwaggerGen();*/
 
-builder.Services.AddScoped<ISignUpService, SignUpService>();
+builder.Services.AddScoped<ISignUpSupport, SignUpSupport>();
 builder.Services.AddScoped<IDataBaseService, DataBaseService>();
 builder.Services.AddScoped<IValidation, Validation>();
-builder.Services.AddScoped<ILogInService, LogInService>();
-builder.Services.AddScoped<IOfferRideSerice,OfferRideService>();
+builder.Services.AddScoped<ILogInSupport, LogInSupport>();
+builder.Services.AddScoped<ICarpoolOfferService,CarpoolOfferService>();
 builder.Services.AddScoped<IBookARideService, BookARideService>();
+builder.Services.AddScoped<IMyRideSupport, MyRidesSupport>();
 
 /*
 builder.Services.AddDbContext<CarPoolDBContext>(opt =>

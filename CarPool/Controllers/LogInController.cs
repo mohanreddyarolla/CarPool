@@ -10,12 +10,11 @@ namespace CarPool.Controllers
     [ApiController]
     public class LogInController : ControllerBase
     {
-        private CarPoolDBContext carPoolDBContext;
-        ILogInService logInService;
+ 
+        ILogInSupport logInService;
         
-        public LogInController(CarPoolDBContext _carPoolDBContext, ILogInService _logInServices)
+        public LogInController(ILogInSupport _logInServices)
         {
-            carPoolDBContext = _carPoolDBContext;
             logInService = _logInServices;
            
         }
@@ -25,10 +24,10 @@ namespace CarPool.Controllers
         [HttpPost]
         public ActionResult GetLogInData(LogInData logInData)
         {
+            string status = logInService.ProcessLogIn(logInData);
 
-            if (logInService.LogIn(logInData))
-                return Ok("LogIn Successful");
-            return BadRequest("LogIn UnSuccessful");
+            return Ok(status);
+            
         }
     }
 }

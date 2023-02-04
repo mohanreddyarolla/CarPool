@@ -3,9 +3,9 @@ using CarPool.Models.DBModels;
 
 namespace CarPool.IServices
 {
-    public interface IOfferRideSerice
+    public interface ICarpoolOfferService
     {
-        public Boolean SaveRideOffer(OfferRideData offerRideData);
+        public string TakeRideOffer(OfferRideData offerRideData);
         public bool GenerateAvailableSeatsList(List<int> stopListIds, int offeredRideId, int TotalSeats);
     }
 }

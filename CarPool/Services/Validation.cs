@@ -12,7 +12,7 @@ namespace CarPool.Services
             dataBaseService= _dataBaseService;
             
         }
-        public Boolean ValidateSignUpData(SignUpData signUpData) 
+        public Boolean ValidateNewUserRegistration(SignUpData signUpData) 
         {
             if(signUpData.Name == null || signUpData.EmailId == null || signUpData.Password != signUpData.ConformPassword)
             {
@@ -23,9 +23,9 @@ namespace CarPool.Services
           
         }
 
-        public Boolean ValidateUser(LogInData logInData)
+        public Boolean ConfirmUserIdentity(LogInData logInData)
         {
-            var user = dataBaseService.GetUser(logInData);
+            var user = dataBaseService.FetchUserData(logInData);
 
             if(user != null)
             {
@@ -34,7 +34,7 @@ namespace CarPool.Services
             return false;
         }
 
-        public Boolean CheckForSourceDestinationMatch(int startLocationId,int endLocationId,List<int> stopList)
+        public Boolean HasMatchingPickupAndDropoff(int startLocationId,int endLocationId,List<int> stopList)
         {
             Boolean startFound = false;
             Boolean endFound = false;
@@ -59,6 +59,20 @@ namespace CarPool.Services
         }
 
         
+        public Boolean HasRoomForPassengers(List<int> stopListIds, int rideId, int requiredSeats,int fromLocationId,int ToLocationId)
+        {
+            int FromLocationIndex = stopListIds.IndexOf(fromLocationId);
+            int ToLocationIndex = stopListIds.IndexOf(ToLocationId);
 
+            List<int> seatsAtEachStop = dataBaseService.GetAvailableSeatsList(rideId,stopListIds);
+
+            for(int i=FromLocationIndex; i<ToLocationIndex; i++)
+            {
+                if (seatsAtEachStop[i] < requiredSeats)
+                    return false;
+            }
+
+            return true;
+        }
     }
 }

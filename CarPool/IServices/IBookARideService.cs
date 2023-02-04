@@ -5,6 +5,7 @@ namespace CarPool.IServices
 {
     public interface IBookARideService
     {
-        public List<AvailableRides> GetAvailableRidesToBook(BookRideData bookRideData);
+        public List<OfferedRides> GetAvailableRidesToBook(RideData bookRideData);
+        public String BookARide(RideBookingData rideBookingData);
     }
 }

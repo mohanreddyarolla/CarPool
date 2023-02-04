@@ -5,44 +5,43 @@ using System.Globalization;
 
 namespace CarPool.Services
 {
-    public class OfferRideService:IOfferRideSerice
+    public class CarpoolOfferService:ICarpoolOfferService
     {
         IDataBaseService dataBaseService;
-        public OfferRideService(IDataBaseService dataBaseService)
+        public CarpoolOfferService(IDataBaseService dataBaseService)
         {
             this.dataBaseService = dataBaseService;
         }
-        public Boolean SaveRideOffer(OfferRideData offerRideData)
+        public string TakeRideOffer(OfferRideData offerRideData)
         {
-            Console.WriteLine("InService");
 
             CultureInfo provider = CultureInfo.InvariantCulture;
 
-            AvailableRides newRide = new AvailableRides();
+            OfferedRides newRide = new OfferedRides();
             newRide.StartTime = TimeSpan.ParseExact(offerRideData.StartTime, "g", provider);
             newRide.EndTime = TimeSpan.ParseExact(offerRideData.EndTime, "g", provider);
             newRide.TotalPrice = offerRideData.TotalPrice;
             newRide.StopList = offerRideData.StopList;
-            newRide.UserId = offerRideData.UserId;
+            newRide.RideProviderId = offerRideData.UserId;
             newRide.Date = DateTime.ParseExact(offerRideData.Date, "yyyy-mm-dd", provider);
             newRide.CurrentState= offerRideData.CurrentState;
 
-            int offeredRideId = dataBaseService.SaveInAvailableRides(newRide);
+            int offeredRideId = dataBaseService.SaveRideOffer(newRide);
 
             if(offeredRideId != -1)
             {
                 List<int> stopListIds = new List<int>(Array.ConvertAll(offerRideData.StopList.Split(','), int.Parse));
                 if(GenerateAvailableSeatsList(stopListIds, offeredRideId, offerRideData.TotalSeats))
                 {
-                    return true;
+                    return "You're all set! Your ride offer is now available for booking.";
                 }
-                newRide.CurrentState = "InActive";
+                
                 dataBaseService.MakeRideInActive(newRide);
-                return false;
+                return "Sorry, there was a problem with saving your ride offer. Please try again later.";
             }
             else
             {
-                return false;
+                return "We're sorry, there was a problem saving your ride offer. Please try again.";
             }
         }
 
