@@ -6,22 +6,26 @@ namespace CarPool.Services
 {
     public class SignUpSupport:ISignUpSupport
     {
-        IValidation validation;
+        IValidator validation;
         IDataBaseService dataBaseService;
-        public SignUpSupport(IValidation _validation,IDataBaseService _dataBaseService) 
+        public SignUpSupport(IValidator _validation,IDataBaseService _dataBaseService) 
         { 
             validation = _validation;
             dataBaseService= _dataBaseService;
 
         }
-        public string ProcessSignUp(SignUpData signUpData)
+        public string ProcessSignUp(SignUpRequest signUpRequest)
         {
-            if(validation.ValidateNewUserRegistration(signUpData))
+            if(validation.IsUserNameExist(signUpRequest.EmailId))
+            {
+                return "Sorry, The Email Id is allready taken, Please provide another Email Id.";
+            }
+            if(validation.Validate(signUpRequest) )
             {
                 User newUser = new User();
-                newUser.Name = signUpData.Name;
-                newUser.Password = signUpData.Password;
-                newUser.EmailId = signUpData.EmailId;
+                newUser.Name = signUpRequest.Name;
+                newUser.Password = signUpRequest.Password;
+                newUser.EmailId = signUpRequest.EmailId;
 
                 if (dataBaseService.SaveUserSignUpDetails(newUser))
                     return "Congratulations, your account has been created.";

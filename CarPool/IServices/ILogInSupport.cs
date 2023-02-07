@@ -4,6 +4,6 @@ namespace CarPool.IServices
 {
     public interface ILogInSupport
     {
-        public string ProcessLogIn(LogInData logInData);
+        public string ProcessLogIn(LogInRequest logInData);
     }
 }

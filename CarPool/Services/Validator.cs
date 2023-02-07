@@ -3,18 +3,18 @@ using CarPool.Models;
 
 namespace CarPool.Services
 {
-    public class Validation:IValidation
+    public class Validator:IValidator
     {
         IDataBaseService dataBaseService;
         
-        public Validation(IDataBaseService _dataBaseService)
+        public Validator(IDataBaseService _dataBaseService)
         {
             dataBaseService= _dataBaseService;
             
         }
-        public Boolean ValidateNewUserRegistration(SignUpData signUpData) 
+        public Boolean Validate(SignUpRequest signUpRequest) 
         {
-            if(signUpData.Name == null || signUpData.EmailId == null || signUpData.Password != signUpData.ConformPassword)
+            if(signUpRequest.Name == null || signUpRequest.EmailId == null || signUpRequest.Password != signUpRequest.ConformPassword)
             {
                 return false;
             }
@@ -23,7 +23,19 @@ namespace CarPool.Services
           
         }
 
-        public Boolean ConfirmUserIdentity(LogInData logInData)
+        public Boolean IsUserNameExist(string newUserName) 
+        {
+            foreach(string userName in dataBaseService.GetAllUserNames())
+            {
+                if(userName == newUserName)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public Boolean ConfirmUserIdentity(LogInRequest logInData)
         {
             var user = dataBaseService.FetchUserData(logInData);
 
@@ -74,5 +86,6 @@ namespace CarPool.Services
 
             return true;
         }
+
     }
 }

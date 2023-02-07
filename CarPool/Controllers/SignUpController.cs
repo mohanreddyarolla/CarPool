@@ -13,11 +13,11 @@ namespace CarPool.Controllers
     public class SignUpController : ControllerBase
     {
         private CarPoolDBContext carPoolDBContext;
-        ISignUpSupport signUpService;
-        public SignUpController(CarPoolDBContext _carPoolDBContext, ISignUpSupport _signUpService)
+        ISignUpSupport signUpSupport;
+        public SignUpController(CarPoolDBContext _carPoolDBContext, ISignUpSupport _signUpSupport)
         {
             carPoolDBContext = _carPoolDBContext;
-            signUpService = _signUpService;
+            signUpSupport = _signUpSupport;
         }
 
         [HttpGet]
@@ -27,9 +27,9 @@ namespace CarPool.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetSignUpDetails(SignUpData signUpData)
+        public ActionResult GetSignUpDetails(SignUpRequest signUpData)
         {
-            string status = signUpService.ProcessSignUp(signUpData);
+            string status = signUpSupport.ProcessSignUp(signUpData);
            
             return Ok(status);
             

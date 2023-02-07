@@ -15,7 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddScoped<ISignUpSupport, SignUpSupport>();
 builder.Services.AddScoped<IDataBaseService, DataBaseService>();
-builder.Services.AddScoped<IValidation, Validation>();
+builder.Services.AddScoped<IValidator, Validator>();
 builder.Services.AddScoped<ILogInSupport, LogInSupport>();
 builder.Services.AddScoped<ICarpoolOfferService,CarpoolOfferService>();
 builder.Services.AddScoped<IBookARideService, BookARideService>();
@@ -28,7 +28,7 @@ builder.Services.AddDbContext<CarPoolDBContext>(opt =>
 
 /*Console.WriteLine("...");*/
 
-builder.Services.AddDbContext<CarPoolDBContext>(op => op.UseSqlServer("Server=LAPTOP-EURDQUD4\\SQLEXPRESS;Database=CarPoolDB;Trusted_Connection=True;TrustServerCertificate=True"));
+builder.Services.AddDbContext<CarPoolDBContext>(op => op.UseSqlServer(builder.Configuration.GetValue<string>("connectionString")));
 
 
 

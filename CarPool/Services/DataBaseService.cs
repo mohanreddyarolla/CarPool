@@ -1,6 +1,7 @@
 ﻿using CarPool.IServices;
 using CarPool.Models;
 using CarPool.Models.DBModels;
+using System.Linq;
 
 namespace CarPool.Services
 {
@@ -16,13 +17,20 @@ namespace CarPool.Services
 
         public Boolean SaveUserSignUpDetails(User newUser)
         {
+            try
+            {
+                carPoolDBContext.Users.Add(newUser);
+                carPoolDBContext.SaveChanges();
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
             
-            carPoolDBContext.Users.Add(newUser);
-            carPoolDBContext.SaveChanges();
-            return true;
         }
 
-        public User FetchUserData(LogInData logInData)
+        public User FetchUserData(LogInRequest logInData)
         {
             var userData = carPoolDBContext.Users.FirstOrDefault(user => user.EmailId == logInData.EmailId && user.Password == logInData.Password);
 
@@ -34,7 +42,7 @@ namespace CarPool.Services
            
             try
             {
-                carPoolDBContext.AvailableRides.Add(newRide);
+                carPoolDBContext.OfferedRides.Add(newRide);
                 carPoolDBContext.SaveChanges();
                 return newRide.OfferedRideId;
             }
@@ -68,7 +76,7 @@ namespace CarPool.Services
             try
             {
                 newRide.CurrentState = "InActive";
-                carPoolDBContext.AvailableRides.Update(newRide);
+                carPoolDBContext.OfferedRides.Update(newRide);
                 carPoolDBContext.SaveChanges();
             }
             catch (Exception ex)
@@ -82,7 +90,7 @@ namespace CarPool.Services
         {
             List<OfferedRides>  matchingRides = new List<OfferedRides>();
 
-            foreach(OfferedRides ride in  carPoolDBContext.AvailableRides)
+            foreach(OfferedRides ride in  carPoolDBContext.OfferedRides)
             {
                 if(ride.CurrentState == "Active")
                 {
@@ -113,7 +121,7 @@ namespace CarPool.Services
         public OfferedRides GetAvailableRidesById(int id)
         {
             
-             return carPoolDBContext.AvailableRides.FirstOrDefault(ride => ride.OfferedRideId == id) ;
+             return carPoolDBContext.OfferedRides.FirstOrDefault(ride => ride.OfferedRideId == id) ;
             
         }
 
@@ -184,7 +192,7 @@ namespace CarPool.Services
         {
             List<OfferedRides> offeredRides = new List<OfferedRides>();
 
-            offeredRides = carPoolDBContext.AvailableRides.Where(ride => ride.RideProviderId == userId).ToList();
+            offeredRides = carPoolDBContext.OfferedRides.Where(ride => ride.RideProviderId == userId).ToList();
 
             return offeredRides;
         }
@@ -196,6 +204,23 @@ namespace CarPool.Services
             offeredRides = carPoolDBContext.BookedRides.Where(ride => ride.BookedUserId == userId).ToList();
 
             return offeredRides;
+        }
+
+        public IEnumerable<String> GetAllUserNames()
+        {
+            List<string> userNames = carPoolDBContext.Users.Select(user => user.EmailId).ToList();
+
+            foreach(string userName in userNames)
+            {
+                yield return userName;
+            }
+        }
+
+        public int GetUserId(string EmailId)
+        {
+            User user = carPoolDBContext.Users.FirstOrDefault(user => user.EmailId == EmailId);
+
+            return user.UserId;
         }
     }
 }

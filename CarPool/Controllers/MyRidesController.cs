@@ -18,7 +18,7 @@ namespace CarPool.Controllers
         [HttpGet("{userId}")]
         public ActionResult<MyRides> GetMyRides(int userId)
         {
-            Console.WriteLine(".......");
+            
             return myRideSupport.ProcessUserRides(userId);
         }
     }

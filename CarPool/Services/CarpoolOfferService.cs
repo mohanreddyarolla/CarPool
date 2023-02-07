@@ -12,7 +12,7 @@ namespace CarPool.Services
         {
             this.dataBaseService = dataBaseService;
         }
-        public string TakeRideOffer(OfferRideData offerRideData)
+        public string TakeRideOffer(OfferRideRequest offerRideData)
         {
 
             CultureInfo provider = CultureInfo.InvariantCulture;
@@ -22,7 +22,7 @@ namespace CarPool.Services
             newRide.EndTime = TimeSpan.ParseExact(offerRideData.EndTime, "g", provider);
             newRide.TotalPrice = offerRideData.TotalPrice;
             newRide.StopList = offerRideData.StopList;
-            newRide.RideProviderId = offerRideData.UserId;
+            newRide.RideProviderId = offerRideData.RideProviderId;
             newRide.Date = DateTime.ParseExact(offerRideData.Date, "yyyy-mm-dd", provider);
             newRide.CurrentState= offerRideData.CurrentState;
 

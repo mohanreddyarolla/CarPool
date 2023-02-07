@@ -5,16 +5,22 @@ namespace CarPool.Services
 {
     public class LogInSupport:ILogInSupport
     {
-        IValidation validation;
-        public LogInSupport(IValidation _validation) 
+        IValidator validation;
+        IDataBaseService dataBaseService;
+        public LogInSupport(IValidator _validation,IDataBaseService _dataBaseService) 
         { 
             validation = _validation;
+            dataBaseService = _dataBaseService;
         }
 
-        public string ProcessLogIn(LogInData logInData)
+        public string ProcessLogIn(LogInRequest logInRequest)
         {
-            if(validation.ConfirmUserIdentity(logInData))
-                return "Login successful! Enjoy the ride with us";
+            
+            if(validation.ConfirmUserIdentity(logInRequest))
+            {
+                return "Login successful! , Enjoy the ride with us";
+            }
+                
             return "Login failed! Please check your username and password and try again.";
         }
     }

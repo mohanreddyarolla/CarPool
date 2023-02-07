@@ -7,7 +7,7 @@ namespace CarPool.IServices
     {
         public Boolean SaveUserSignUpDetails(User newUser);
 
-        public User FetchUserData(LogInData logInData);
+        public User FetchUserData(LogInRequest logInData);
         public int SaveRideOffer(OfferedRides offerRideData);
         public bool SaveInAvailableSeats(AvailableSeats newSeats);
 
@@ -16,9 +16,12 @@ namespace CarPool.IServices
         public List<OfferedRides> GetAvailbleRides();
         public List<int> GetAvailableSeatsList(int availableRideId, List<int> stopListIds);
         public OfferedRides GetAvailableRidesById(int id);
-        public Boolean SaveInBookedRides(int UserId, OfferedRides ride, int fromLocationId, int ToLocationId, int SeatsReserved);
+        public Boolean SaveInBookedRides(int UserId, OfferedRides ride, int fromLocationId, int ToLocationId, int SeatsReserved, int ridePRoviderId);
         public Boolean ReserveSeats(List<int> stopListIds, int rideId, int requiredSeats, int fromLocationId, int ToLocationId);
         public List<OfferedRides> GetAllOfferedRidesByUserId(int userId);
         public List<BookedRides> GetAllBookedRidesByUserId(int userId);
+        public IEnumerable<String> GetAllUserNames();
+        public int GetUserId(string EmailId);
+
     }
 }

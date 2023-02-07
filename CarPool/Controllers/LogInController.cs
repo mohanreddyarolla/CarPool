@@ -19,10 +19,8 @@ namespace CarPool.Controllers
            
         }
 
-        
-
         [HttpPost]
-        public ActionResult GetLogInData(LogInData logInData)
+        public ActionResult GetLogInData(LogInRequest logInData)
         {
             string status = logInService.ProcessLogIn(logInData);
 

@@ -8,9 +8,9 @@ namespace CarPool.Services
     public class BookARideService:IBookARideService
     {
         IDataBaseService dataBaseService;
-        IValidation validation;
+        IValidator validation;
 
-        public BookARideService(IDataBaseService _dataBaseService,IValidation _validation)
+        public BookARideService(IDataBaseService _dataBaseService,IValidator _validation)
         {
             this.dataBaseService = _dataBaseService;
             validation = _validation;
@@ -36,14 +36,14 @@ namespace CarPool.Services
             return matchingRides;
         }
 
-        public String BookARide(RideBookingData rideBookingData)
+        public String BookARide(RideBookingRequest rideBookingData)
         {
             OfferedRides ride = dataBaseService.GetAvailableRidesById(rideBookingData.AvailableRideId);
             List<int> stopListIds = new List<int>(Array.ConvertAll(ride.StopList.Split(','), int.Parse));
 
             if (validation.HasRoomForPassengers(stopListIds, rideBookingData.AvailableRideId, rideBookingData.RequiredSeats, rideBookingData.FromLocationId, rideBookingData.ToLocationId))
             {
-                if(dataBaseService.SaveInBookedRides(rideBookingData.UserId, ride, rideBookingData.FromLocationId, rideBookingData.ToLocationId, rideBookingData.RequiredSeats))
+                if(dataBaseService.SaveInBookedRides(rideBookingData.UserId, ride, rideBookingData.FromLocationId, rideBookingData.ToLocationId, rideBookingData.RequiredSeats,ride.RideProviderId))
                 {
                     if(dataBaseService.ReserveSeats(stopListIds,rideBookingData.AvailableRideId,rideBookingData.RequiredSeats,rideBookingData.FromLocationId,rideBookingData.ToLocationId))
                     {

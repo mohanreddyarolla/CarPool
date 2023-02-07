@@ -1,6 +1,6 @@
 ﻿namespace CarPool.Models
 {
-    public class RideBookingData
+    public class RideBookingRequest
     {
         public int UserId { get; set; }
         public int FromLocationId { get; set; }

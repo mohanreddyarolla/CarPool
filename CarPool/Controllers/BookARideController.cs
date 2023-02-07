@@ -16,16 +16,17 @@ namespace CarPool.Controllers
             bookARideService= _bookARideService;
         }
 
-        [HttpPost("RideData")]
+        [HttpPost("GetAvailableRides")]
         public IEnumerable<OfferedRides> GetRideDetails(RideData bookRideData)
         {
+
             return bookARideService.GetAvailableRidesToBook(bookRideData).ToList();
         }
 
         [HttpPost("Book")]
-        public ActionResult BookARideById(RideBookingData rideBookingData)
+        public ActionResult BookARideById(RideBookingRequest rideBookingData)
         {
-            Console.WriteLine("mkkk");
+
             string status = bookARideService.BookARide(rideBookingData);
             
             return Ok(status);
