@@ -1,14 +1,27 @@
-using CarPool.IServices;
+using CarPool.Interface;
 using CarPool.Models;
 using CarPool.Models.DBModels;
 using CarPool.Services;
 using Microsoft.EntityFrameworkCore;
 
+var policyName = "_myAllowSpecificOrigin";
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: policyName, builder =>
+    {
+        builder.AllowAnyOrigin().WithMethods("GET", "POST").AllowAnyHeader();
+
+    });
+});
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddCors();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 /*builder.Services.AddSwaggerGen();*/
@@ -46,5 +59,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors(policyName);
 
 app.Run();

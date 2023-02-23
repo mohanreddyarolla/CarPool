@@ -1,6 +1,7 @@
-﻿using CarPool.IServices;
+﻿using CarPool.Interface;
 using CarPool.Models;
 using CarPool.Models.DBModels;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace CarPool.Services
@@ -15,17 +16,17 @@ namespace CarPool.Services
            
         }
 
-        public Boolean SaveUserSignUpDetails(User newUser)
+        public int SaveUserSignUpDetails(User newUser)
         {
             try
             {
                 carPoolDBContext.Users.Add(newUser);
                 carPoolDBContext.SaveChanges();
-                return true;
+                return newUser.UserId;
             }
             catch(Exception ex)
             {
-                return false;
+                return -1;
             }
             
         }
@@ -136,8 +137,7 @@ namespace CarPool.Services
                 newRide.StartPointId = fromLocationId;
                 newRide.StopPointId = ToLocationId;
                 newRide.Date = ride.Date;
-                newRide.StartTime = ride.StartTime;
-                newRide.EndTime = ride.EndTime;
+                newRide.Time = ride.Time;
                 newRide.Price = ride.TotalPrice;
                 newRide.RideProviderId = rideProviderId;
 
@@ -222,5 +222,38 @@ namespace CarPool.Services
 
             return user.UserId;
         }
+
+        public List<Locations> GetLocations()
+        {
+            List<Locations> locations = carPoolDBContext.Locations.ToList();
+
+            return locations;
+        }
+
+        public string GetLocationById(int id)
+        {
+            string name = carPoolDBContext.Locations.FirstOrDefault(location => location.LocationId == id).LocationName;
+            if(name != "null")
+            {
+                return name;
+            }
+            return "";
+
+        }
+
+         public string GetUserName(int userId)
+        {
+            var user =  carPoolDBContext.Users.FirstOrDefault(user=>
+            user.UserId == userId);
+            
+            return user.Name;
+        }
+
+        public int GetAvailableSeats(int AvailableRideId, int LocationId)
+        {
+            int seats = carPoolDBContext.AvailableSeats.FirstOrDefault(seat => seat.LocationId == LocationId && seat.AvailableRideId==AvailableRideId).SeatAvailability ;
+            return seats;
+        }
+
     }
 }

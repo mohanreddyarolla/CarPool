@@ -1,8 +1,10 @@
-﻿using CarPool.IServices;
+﻿using CarPool.Interface;
 using CarPool.Models;
 using CarPool.Models.DBModels;
+using CarPool.Models.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace CarPool.Controllers
 {
@@ -10,6 +12,7 @@ namespace CarPool.Controllers
     [ApiController]
     public class BookARideController : ControllerBase
     {
+
         IBookARideService bookARideService;
         public BookARideController(IBookARideService _bookARideService)
         {
@@ -17,10 +20,16 @@ namespace CarPool.Controllers
         }
 
         [HttpPost("GetAvailableRides")]
-        public IEnumerable<OfferedRides> GetRideDetails(RideData bookRideData)
+        public ActionResult<List<MatchingRide>> GetRideDetails(RideData bookRideData)
         {
 
-            return bookARideService.GetAvailableRidesToBook(bookRideData).ToList();
+            return  Ok(JsonSerializer.Serialize( bookARideService.GetAvailableRidesToBook(bookRideData).ToList()));
+        }
+
+        [HttpGet("GetBookingCard/{AvailableRideId}/{FromLocationID}/{ToLocationID}")]
+        public ActionResult GetBookingCard(int AvailableRideId, int FromLocationID, int ToLocationID)
+        {
+            return Ok(JsonSerializer.Serialize(bookARideService.GetBookingCard(AvailableRideId, FromLocationID, ToLocationID)));
         }
 
         [HttpPost("Book")]
@@ -28,7 +37,6 @@ namespace CarPool.Controllers
         {
 
             string status = bookARideService.BookARide(rideBookingData);
-            
             return Ok(status);
         }
     }

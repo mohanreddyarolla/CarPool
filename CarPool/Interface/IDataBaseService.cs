@@ -1,11 +1,11 @@
 ﻿using CarPool.Models;
 using CarPool.Models.DBModels;
 
-namespace CarPool.IServices
+namespace CarPool.Interface
 {
     public interface IDataBaseService
     {
-        public Boolean SaveUserSignUpDetails(User newUser);
+        public int SaveUserSignUpDetails(User newUser);
 
         public User FetchUserData(LogInRequest logInData);
         public int SaveRideOffer(OfferedRides offerRideData);
@@ -22,6 +22,12 @@ namespace CarPool.IServices
         public List<BookedRides> GetAllBookedRidesByUserId(int userId);
         public IEnumerable<String> GetAllUserNames();
         public int GetUserId(string EmailId);
+        public List<Locations> GetLocations();
+        public string GetUserName(int userId);
+        public int GetAvailableSeats(int AvailableRideId, int LocationId);
+        public string GetLocationById(int id);
+
+
 
     }
 }

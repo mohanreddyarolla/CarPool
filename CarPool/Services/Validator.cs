@@ -1,4 +1,4 @@
-﻿using CarPool.IServices;
+﻿using CarPool.Interface;
 using CarPool.Models;
 
 namespace CarPool.Services
@@ -14,7 +14,7 @@ namespace CarPool.Services
         }
         public Boolean Validate(SignUpRequest signUpRequest) 
         {
-            if(signUpRequest.Name == null || signUpRequest.EmailId == null || signUpRequest.Password != signUpRequest.ConformPassword)
+            if(signUpRequest.Name == null || signUpRequest.EmailId == null)
             {
                 return false;
             }
@@ -35,15 +35,17 @@ namespace CarPool.Services
             return false;
         }
 
-        public Boolean ConfirmUserIdentity(LogInRequest logInData)
+        public int ConfirmUserIdentity(LogInRequest logInData)
         {
+
             var user = dataBaseService.FetchUserData(logInData);
+           
 
             if(user != null)
             {
-                return true;
+                return user.UserId;
             }
-            return false;
+            return -1;
         }
 
         public Boolean HasMatchingPickupAndDropoff(int startLocationId,int endLocationId,List<int> stopList)

@@ -1,4 +1,4 @@
-﻿using CarPool.IServices;
+﻿using CarPool.Interface;
 using CarPool.Models;
 
 namespace CarPool.Services
@@ -13,15 +13,29 @@ namespace CarPool.Services
             dataBaseService = _dataBaseService;
         }
 
-        public string ProcessLogIn(LogInRequest logInRequest)
+        public Message ProcessLogIn(LogInRequest logInRequest)
         {
-            
-            if(validation.ConfirmUserIdentity(logInRequest))
+            Message message= new Message();
+
+            int userId = validation.ConfirmUserIdentity(logInRequest);
+
+            if(userId != -1)
             {
-                return "Login successful! , Enjoy the ride with us";
+                message.UserId = userId;
+                message.Status = true;
+                message.StatusMessage = "Login successful! , Enjoy the ride with us";
+                return message;
             }
-                
-            return "Login failed! Please check your username and password and try again.";
+            else
+            {
+                message.UserId = userId;
+                message.Status = false;
+                message.StatusMessage = "Login failed! Please check your username and password and try again.";
+                return message;
+            }
+
+           
+
         }
     }
 }

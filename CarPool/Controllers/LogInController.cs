@@ -1,8 +1,9 @@
-﻿using CarPool.IServices;
+﻿using CarPool.Interface;
 using CarPool.Models;
 using CarPool.Models.DBModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace CarPool.Controllers
 {
@@ -22,9 +23,9 @@ namespace CarPool.Controllers
         [HttpPost]
         public ActionResult GetLogInData(LogInRequest logInData)
         {
-            string status = logInService.ProcessLogIn(logInData);
+            Message status = logInService.ProcessLogIn(logInData);
 
-            return Ok(status);
+            return Ok(JsonSerializer.Serialize(status));
             
         }
     }

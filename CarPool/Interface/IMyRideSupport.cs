@@ -1,6 +1,6 @@
 ﻿using CarPool.Models;
 
-namespace CarPool.IServices
+namespace CarPool.Interface
 {
     public interface IMyRideSupport
     {

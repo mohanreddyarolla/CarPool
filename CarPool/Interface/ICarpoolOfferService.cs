@@ -1,7 +1,7 @@
 ﻿using CarPool.Models;
 using CarPool.Models.DBModels;
 
-namespace CarPool.IServices
+namespace CarPool.Interface
 {
     public interface ICarpoolOfferService
     {

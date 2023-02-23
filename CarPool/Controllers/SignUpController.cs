@@ -1,10 +1,10 @@
-﻿using CarPool.IServices;
+﻿using CarPool.Interface;
 using CarPool.Models;
 using CarPool.Models.DBModels;
 using CarPool.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Text.Json;
 
 namespace CarPool.Controllers
 {
@@ -29,9 +29,10 @@ namespace CarPool.Controllers
         [HttpPost]
         public ActionResult GetSignUpDetails(SignUpRequest signUpData)
         {
-            string status = signUpSupport.ProcessSignUp(signUpData);
+            Console.WriteLine("Hi");
+            Message status = signUpSupport.ProcessSignUp(signUpData);
            
-            return Ok(status);
+            return Ok(JsonSerializer.Serialize(status));
             
         }
        

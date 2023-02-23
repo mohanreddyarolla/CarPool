@@ -1,4 +1,4 @@
-﻿using CarPool.IServices;
+﻿using CarPool.Interface;
 using CarPool.Models;
 using CarPool.Models.DBModels;
 using System.Globalization;
@@ -18,13 +18,14 @@ namespace CarPool.Services
             CultureInfo provider = CultureInfo.InvariantCulture;
 
             OfferedRides newRide = new OfferedRides();
-            newRide.StartTime = TimeSpan.ParseExact(offerRideData.StartTime, "g", provider);
-            newRide.EndTime = TimeSpan.ParseExact(offerRideData.EndTime, "g", provider);
+         
+            newRide.Time = offerRideData.Time;
             newRide.TotalPrice = offerRideData.TotalPrice;
             newRide.StopList = offerRideData.StopList;
             newRide.RideProviderId = offerRideData.RideProviderId;
-            newRide.Date = DateTime.ParseExact(offerRideData.Date, "yyyy-mm-dd", provider);
+            newRide.Date = offerRideData.Date;
             newRide.CurrentState= offerRideData.CurrentState;
+            newRide.SeatsProvided = offerRideData.TotalSeats;
 
             int offeredRideId = dataBaseService.SaveRideOffer(newRide);
 
