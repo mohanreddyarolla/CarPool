@@ -37,6 +37,8 @@ namespace CarPool.Services
                     newMatch.From = dataBaseService.GetLocationById(rideData.FromLocationId);
                     newMatch.To = dataBaseService.GetLocationById(rideData.ToLocationId);
                     newMatch.SeatAvailability = GetMinimumSeatsAvailable(stopListIds, ride.OfferedRideId, stopListIds[0], stopListIds[stopListIds.Count - 1]);
+
+                    if (newMatch.SeatAvailability <= 0) continue;
                     newMatch.Date = ride.Date;
                     newMatch.Price = ride.TotalPrice;
                     newMatch.Name = dataBaseService.GetUserName(ride.RideProviderId);

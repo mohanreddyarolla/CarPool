@@ -3,6 +3,7 @@ using CarPool.Models;
 using CarPool.Models.DBModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace CarPool.Controllers
 {
@@ -29,7 +30,7 @@ namespace CarPool.Controllers
         {
             string status = offerRideSerice.TakeRideOffer(offerRideData);
             
-            return Ok(status);
+            return Ok(JsonSerializer.Serialize(status));
             
         }
     }

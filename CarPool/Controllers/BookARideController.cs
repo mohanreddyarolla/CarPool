@@ -37,7 +37,7 @@ namespace CarPool.Controllers
         {
 
             string status = bookARideService.BookARide(rideBookingData);
-            return Ok(status);
+            return Ok(JsonSerializer.Serialize(status));
         }
     }
 }
