@@ -12,6 +12,8 @@ namespace CarPool.Models.DBModels
         public string Name { get; set; }
         public string EmailId { get; set; }
         public string Password { get; set; }
+        public int Age { get; set; }
+        public string Address { get; set; }
 
 
     }

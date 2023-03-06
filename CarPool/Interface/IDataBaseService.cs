@@ -26,6 +26,8 @@ namespace CarPool.Interface
         public string GetUserName(int userId);
         public int GetAvailableSeats(int AvailableRideId, int LocationId);
         public string GetLocationById(int id);
+        public User GetUserData(int userId);
+        public string UpdateUserData(User user);
 
 
 

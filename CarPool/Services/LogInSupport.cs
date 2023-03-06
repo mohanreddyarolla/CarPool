@@ -7,10 +7,12 @@ namespace CarPool.Services
     {
         IValidator validation;
         IDataBaseService dataBaseService;
-        public LogInSupport(IValidator _validation,IDataBaseService _dataBaseService) 
+        IConfiguration configuration;
+        public LogInSupport(IValidator _validation,IDataBaseService _dataBaseService,IConfiguration _configuration) 
         { 
             validation = _validation;
             dataBaseService = _dataBaseService;
+            configuration = _configuration;
         }
 
         public Message ProcessLogIn(LogInRequest logInRequest)
@@ -24,6 +26,7 @@ namespace CarPool.Services
                 message.UserId = userId;
                 message.Status = true;
                 message.StatusMessage = "Login successful! , Enjoy the ride with us";
+                message.Token = new TokenGenerator(configuration).GenerateToken(userId.ToString());
                 return message;
             }
             else

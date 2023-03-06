@@ -2,14 +2,17 @@
 using CarPool.Models;
 using CarPool.Models.DBModels;
 using CarPool.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
 namespace CarPool.Controllers
 {
+    [Authorize]
     [Route("api/CarPool/[controller]")]
     [ApiController]
+    
     public class BookARideController : ControllerBase
     {
 

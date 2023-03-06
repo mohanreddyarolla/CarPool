@@ -29,7 +29,7 @@ namespace CarPool.Controllers
         [HttpPost]
         public ActionResult GetSignUpDetails(SignUpRequest signUpData)
         {
-            Console.WriteLine("Hi");
+            
             Message status = signUpSupport.ProcessSignUp(signUpData);
            
             return Ok(JsonSerializer.Serialize(status));

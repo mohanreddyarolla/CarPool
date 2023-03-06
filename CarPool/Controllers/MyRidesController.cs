@@ -1,5 +1,6 @@
 ﻿using CarPool.Interface;
 using CarPool.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
@@ -8,6 +9,7 @@ namespace CarPool.Controllers
 {
     [Route("api/CarPool/[controller]")]
     [ApiController]
+    [Authorize]
     public class MyRidesController : ControllerBase
     {
         IMyRideSupport myRideSupport;

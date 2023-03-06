@@ -91,14 +91,21 @@ namespace CarPool.Services
         {
             List<OfferedRides>  matchingRides = new List<OfferedRides>();
 
-            foreach(OfferedRides ride in  carPoolDBContext.OfferedRides)
+            try
             {
-                if(ride.CurrentState == "Active")
+                foreach (OfferedRides ride in carPoolDBContext.OfferedRides)
                 {
-                    matchingRides.Add(ride);
-                    Console.WriteLine(ride.RideProviderId);
+                    if (ride.CurrentState == "Active")
+                    {
+                        matchingRides.Add(ride);
+                        Console.WriteLine(ride.RideProviderId);
+                    }
+
                 }
-                    
+            }
+            catch(Exception ex)
+            {
+
             }
 
 
@@ -109,21 +116,38 @@ namespace CarPool.Services
         {
             List<int> availableSeats = new List<int>();
 
-            foreach (int id in stopListIds)
+            try
             {
-                var seats = carPoolDBContext.AvailableSeats.FirstOrDefault(seat => seat.AvailableRideId == availableRideId && seat.LocationId == id);
-                if (seats != null)
-                    availableSeats.Add(seats.SeatAvailability);
-            }           
+                foreach (int id in stopListIds)
+                {
+                    var seats = carPoolDBContext.AvailableSeats.FirstOrDefault(seat => seat.AvailableRideId == availableRideId && seat.LocationId == id);
+                    if (seats != null)
+                        availableSeats.Add(seats.SeatAvailability);
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+
+                 
             
             return availableSeats;
         }
 
         public OfferedRides GetAvailableRidesById(int id)
         {
-            
-             return carPoolDBContext.OfferedRides.FirstOrDefault(ride => ride.OfferedRideId == id) ;
-            
+            OfferedRides offeredRides = new OfferedRides();
+
+            try
+            {
+                offeredRides = carPoolDBContext.OfferedRides.FirstOrDefault(ride => ride.OfferedRideId == id);
+
+            }
+            catch(Exception ex) { }
+
+
+             return offeredRides;
         }
 
         public Boolean SaveInBookedRides(int UserId,OfferedRides ride, int fromLocationId, int ToLocationId,int SeatsReserved, int rideProviderId)
@@ -253,6 +277,35 @@ namespace CarPool.Services
         {
             int seats = carPoolDBContext.AvailableSeats.FirstOrDefault(seat => seat.LocationId == LocationId && seat.AvailableRideId==AvailableRideId).SeatAvailability ;
             return seats;
+        }
+
+        public User GetUserData(int userId)
+        {
+            try
+            {
+                User user = carPoolDBContext.Users.FirstOrDefault(user => user.UserId == userId);
+
+                return user;
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public string UpdateUserData( User user)
+        {
+            try
+            {
+                carPoolDBContext.Users.Update(user);
+                carPoolDBContext.SaveChanges();
+
+                return "Updated Succefully!";
+            }
+            catch(Exception e)
+            {
+                return "Update UNSuccessful";
+            }
         }
 
     }
