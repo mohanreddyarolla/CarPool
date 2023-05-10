@@ -1,10 +1,11 @@
 ﻿using CarPool.Interface;
-using CarPool.Models.DBModels;
+using Carpool.Models.DBModels;
 using CarPool.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using CarPool.Interface.IRepository;
 
 namespace CarPool.Controllers
 {
@@ -13,48 +14,54 @@ namespace CarPool.Controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
-        IDataBaseService dataBaseService;
-        public HomeController(IDataBaseService _dataBaseService)
+        IOfferedRidesRepository offeredRidesRepository;
+        IUserRepository userRepository;
+        ILocationsRepository locationsRepository;
+        IAvailableSeatsRepository availableSeatsRepository;
+        public HomeController(IAvailableSeatsRepository availableSeatsRepository,IOfferedRidesRepository offeredRidesRepository,IUserRepository userRepository, ILocationsRepository locationsRepository)
         {
-            dataBaseService = _dataBaseService;
+            this.availableSeatsRepository = availableSeatsRepository;
+            this.offeredRidesRepository = offeredRidesRepository;
+            this.userRepository = userRepository;
+            this.locationsRepository = locationsRepository;
         }
 
         [HttpGet("GetAllLocations")]
-        public ActionResult GetAllLocations()
+        public async Task<ActionResult> GetAllLocations()
         {
-            return  Ok(JsonSerializer.Serialize(dataBaseService.GetLocations()));
+            return  Ok(JsonSerializer.Serialize(await locationsRepository.GetLocations()));
         }
         
         [HttpGet("GetUserName/{userId}")]
-        public ActionResult GetUserName(int userId)
+        public async Task<ActionResult>  GetUserName(int userId)
         { 
-            return  Ok(JsonSerializer.Serialize(dataBaseService.GetUserName(userId)));
+            return  Ok(JsonSerializer.Serialize(await userRepository.GetUserName(userId)));
         }
         [Authorize]
         [HttpGet("GetAvailableSeats/{AvailableRideId}/{LocationId}")]
-        public ActionResult GetAvailableSeats(int AvailableRideId, int LocationId)
+        public async Task<ActionResult> GetAvailableSeats(int AvailableRideId, int LocationId)
         {
-            return Ok(dataBaseService.GetAvailableSeats(AvailableRideId, LocationId));
+            return Ok(await availableSeatsRepository.GetAvailableSeats(AvailableRideId, LocationId));
         }
         [Authorize]
         [HttpGet("GetOfferedRidesById/{RideId}")]
-        public ActionResult GetOfferedRidesById(int RideId)
+        public async Task<ActionResult> GetOfferedRidesById(int RideId)
         {
-            return Ok(JsonSerializer.Serialize(dataBaseService.GetAvailableRidesById(RideId)));
+            return Ok(JsonSerializer.Serialize(await offeredRidesRepository.GetAvailableRidesById(RideId)));
         }
 
         [Authorize]
         [HttpGet("GetUserData/{userId}")]
-        public ActionResult GetUserData(int userId)
+        public async Task<ActionResult> GetUserData(int userId)
         {
-            return Ok(JsonSerializer.Serialize(dataBaseService.GetUserData(userId)));
+            return Ok(JsonSerializer.Serialize(await userRepository.GetUserData(userId)));
         }
 
         [Authorize]
         [HttpPost("UpdateUserData")]
-        public ActionResult UpdateUserData(User user)
+        public async Task<ActionResult> UpdateUserData(User user)
         {
-            return Ok(JsonSerializer.Serialize(dataBaseService.UpdateUserData(user)));
+            return Ok(JsonSerializer.Serialize(await userRepository.UpdateUserData(user)));
         }
 
 

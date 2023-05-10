@@ -1,5 +1,5 @@
 ﻿using CarPool.Interface;
-using CarPool.Models;
+using Carpool.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,10 +19,10 @@ namespace CarPool.Controllers
         }
 
         [HttpGet("{userId}")]
-        public ActionResult<MyRides> GetMyRides(int userId)
+        public async Task<ActionResult<MyRides>> GetMyRides(int userId)
         {
             
-            return Ok(JsonSerializer.Serialize(myRideSupport.ProcessUserRides(userId)));
+            return  Ok(JsonSerializer.Serialize(await myRideSupport.ProcessUserRides(userId)));
         }
     }
 }

@@ -1,6 +1,8 @@
 using CarPool.Interface;
-using CarPool.Models;
-using CarPool.Models.DBModels;
+using CarPool.Interface.IRepository;
+using Carpool.Models;
+using Carpool.Models.DBModels;
+using CarPool.Repository;
 using CarPool.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -44,12 +46,16 @@ builder.Services.AddEndpointsApiExplorer();
 /*builder.Services.AddSwaggerGen();*/
 
 builder.Services.AddScoped<ISignUpSupport, SignUpSupport>();
-builder.Services.AddScoped<IDataBaseService, DataBaseService>();
 builder.Services.AddScoped<IValidator, Validator>();
 builder.Services.AddScoped<ILogInSupport, LogInSupport>();
 builder.Services.AddScoped<ICarpoolOfferService,CarpoolOfferService>();
 builder.Services.AddScoped<IBookARideService, BookARideService>();
 builder.Services.AddScoped<IMyRideSupport, MyRidesSupport>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IAvailableSeatsRepository , AvailableSeatsRepository >();
+builder.Services.AddTransient <IBookedRidesRepository , BookedRidesRepository > ();
+builder.Services.AddTransient <ILocationsRepository , LocationsRepository > ();
+builder.Services.AddTransient <IOfferedRidesRepository , OfferedRidesRepository> ();
 
 /*
 builder.Services.AddDbContext<CarPoolDBContext>(opt =>

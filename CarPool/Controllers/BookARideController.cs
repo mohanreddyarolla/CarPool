@@ -1,7 +1,7 @@
 ﻿using CarPool.Interface;
-using CarPool.Models;
-using CarPool.Models.DBModels;
-using CarPool.Models.ViewModel;
+using Carpool.Models;
+using Carpool.Models.DBModels;
+using Carpool.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,23 +23,22 @@ namespace CarPool.Controllers
         }
 
         [HttpPost("GetAvailableRides")]
-        public ActionResult<List<MatchingRide>> GetRideDetails(RideData bookRideData)
+        public async  Task<List<MatchingRide>> GetRideDetails(RideData bookRideData)
         {
 
-            return  Ok(JsonSerializer.Serialize( bookARideService.GetAvailableRidesToBook(bookRideData).ToList()));
+            return await  bookARideService.GetAvailableRidesToBook(bookRideData);
         }
 
         [HttpGet("GetBookingCard/{AvailableRideId}/{FromLocationID}/{ToLocationID}")]
-        public ActionResult GetBookingCard(int AvailableRideId, int FromLocationID, int ToLocationID)
+        public async Task<ActionResult< BookingCard>> GetBookingCard(int AvailableRideId, int FromLocationID, int ToLocationID)
         {
-            return Ok(JsonSerializer.Serialize(bookARideService.GetBookingCard(AvailableRideId, FromLocationID, ToLocationID)));
+            return Ok(JsonSerializer.Serialize(await bookARideService.GetBookingCard(AvailableRideId, FromLocationID, ToLocationID)));
         }
 
         [HttpPost("Book")]
-        public ActionResult BookARideById(RideBookingRequest rideBookingData)
+        public async Task<ActionResult> BookARideById(RideBookingRequest rideBookingData)
         {
-
-            string status = bookARideService.BookARide(rideBookingData);
+            string status = await bookARideService.BookARide(rideBookingData);
             return Ok(JsonSerializer.Serialize(status));
         }
     }

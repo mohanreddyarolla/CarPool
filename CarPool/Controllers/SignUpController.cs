@@ -1,6 +1,6 @@
 ﻿using CarPool.Interface;
-using CarPool.Models;
-using CarPool.Models.DBModels;
+using Carpool.Models;
+using Carpool.Models.DBModels;
 using CarPool.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,10 +27,10 @@ namespace CarPool.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetSignUpDetails(SignUpRequest signUpData)
+        public async Task<ActionResult> GetSignUpDetails(SignUpRequest signUpData)
         {
             
-            Message status = signUpSupport.ProcessSignUp(signUpData);
+            Message status = await signUpSupport.ProcessSignUp(signUpData);
            
             return Ok(JsonSerializer.Serialize(status));
             

@@ -1,6 +1,6 @@
 ﻿using CarPool.Interface;
-using CarPool.Models;
-using CarPool.Models.DBModels;
+using Carpool.Models;
+using Carpool.Models.DBModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,15 +22,15 @@ namespace CarPool.Controllers
         }
 
       /*  [HttpGet]
-        public IEnumerable<OfferedRides> ShowAllRides()
+        public IEnumerable<OfferedRide> ShowAllRides()
         {
-            return carPoolDBContext.OfferedRides;
+            return carPoolDBContext.OfferedRide;
         }*/
         
         [HttpPost]
-        public ActionResult GetOfferRideDetails(OfferRideRequest offerRideData)
+        public async Task<ActionResult> GetOfferRideDetails(OfferRideRequest offerRideData)
         {
-            string status = offerRideSerice.TakeRideOffer(offerRideData);
+            string status = await offerRideSerice.TakeRideOffer(offerRideData);
             
             return Ok(JsonSerializer.Serialize(status));
             

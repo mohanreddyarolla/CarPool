@@ -1,6 +1,6 @@
 ﻿using CarPool.Interface;
-using CarPool.Models;
-using CarPool.Models.DBModels;
+using Carpool.Models;
+using Carpool.Models.DBModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
@@ -21,9 +21,9 @@ namespace CarPool.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetLogInData(LogInRequest logInData)
+        public async Task<ActionResult> GetLogInData(LogInRequest logInData)
         {
-            Message status = logInService.ProcessLogIn(logInData);
+            Message status = await logInService.ProcessLogIn(logInData);
 
             return Ok(JsonSerializer.Serialize(status));
             
